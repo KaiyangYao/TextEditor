@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 /** A class for timing the EfficientDocument and BasicDocument classes
  * 
  * @author UC San Diego Intermediate Programming MOOC team
- *
+ * Edited by Kaiyang Yao on 04/2020
  */
 
 public class DocumentBenchmarking {
@@ -20,7 +20,7 @@ public class DocumentBenchmarking {
 	    int trials = 100;
 
 	    // The text to test on
-	    String textfile = "data/warAndPeace.txt";
+	    String textFile = "data/warAndPeace.txt";
 		
 	    // The amount of characters to increment each step
 	    // You can play around with this
@@ -33,11 +33,12 @@ public class DocumentBenchmarking {
 		// THe number of characters to start with. 
 		// You can play around with this.
 		int start = 50000;
-		
-		// TODO: Fill in the rest of this method so that it runs two loops
-		// and prints out timing results as described in the assignment 
+
+		// Implemented in week 3
+		// its runs two loops and prints out timing results as described in the assignment
 		// instructions and following the pseudocode below.
-		for (int numToCheck = start; numToCheck < numSteps*increment + start; 
+		System.out.print("Size\t\tBasicDocumentTime\t\tEfficientDocumentTime\n");
+		for (int numToCheck = start; numToCheck < numSteps*increment + start;
 				numToCheck += increment)
 		{
 			// numToCheck holds the number of characters that you should read from the 
@@ -57,8 +58,26 @@ public class DocumentBenchmarking {
 			 *     b. Calls fleshScore on this document
 			 * 6. Print out the time it took to complete the loop in step 5 
 			 *      (on the same line as the first print statement) followed by a newline (\n) 
-			 */  
-			 
+			 */
+			System.out.print(numToCheck + "\t\t");
+			// time for basic document (converted to second)
+			String input = getStringFromFile(textFile, numToCheck);
+			long startTime = System.nanoTime();
+			for(int i = 0; i < trials; i++) {
+				BasicDocument bd = new BasicDocument(input);
+				bd.getFleschScore();
+			}
+			long endTime = System.nanoTime();
+			System.out.print(((endTime - startTime) / 1000000000.0) + "\t\t\t\t");
+
+			// time for efficient document (converted to second)
+			startTime = System.nanoTime();
+			for(int i = 0; i < trials; i++) {
+				EfficientDocument ed = new EfficientDocument(input);
+				ed.getFleschScore();
+			}
+			endTime = System.nanoTime();
+			System.out.print(((endTime - startTime) / 1000000000.0) + "\n");
 		}
 	
 	}

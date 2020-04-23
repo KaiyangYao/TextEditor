@@ -67,45 +67,45 @@ public abstract class Document {
 	protected int countSyllables(String word)
 	{
 		// Implemented in week 2.  (support videos in Module 2)
-		int numOfSyllables = 0;
-		String vowels = "aeiouy";
-		char[] cArray = word.toLowerCase().toCharArray();  // create a modifiable copy
-		for(int i = 0; i < cArray.length; i++) {
-			if(i < cArray.length - 1 && vowels.indexOf(cArray[i]) >= 0 && vowels.indexOf(cArray[i+1]) < 0) {
-				numOfSyllables += 1;
-			}
-			if(i == cArray.length - 1 && vowels.indexOf(cArray[i]) >= 0) {
-				numOfSyllables += 1;
-			}
-			if(i == cArray.length - 1 && cArray[i] == 'e' && vowels.indexOf(cArray[i-1]) < 0 && numOfSyllables != 1) {
-				numOfSyllables -= 1;			// e.g. "Sugue" should not subtract 1 due to the end e    // lone e will be first added then subtracted
-			}
-		}
-
-	    return numOfSyllables;
-
-		// 	Alternative Method (given in Module 2)
-		//		System.out.print("Counting syllables in " + word + "...");
-		//		int numSyllables = 0;
-		//		boolean newSyllable = true;
+		//		int numOfSyllables = 0;
 		//		String vowels = "aeiouy";
-		//		char[] cArray = word.toCharArray();
-		//		for (int i = 0; i < cArray.length; i++)
-		//		{
-		//			if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e'
-		//					&& newSyllable && numSyllables > 0) {
-		//				numSyllables--;
+		//		char[] cArray = word.toLowerCase().toCharArray();  // create a modifiable copy
+		//		for(int i = 0; i < cArray.length; i++) {
+		//			if(i < cArray.length - 1 && vowels.indexOf(cArray[i]) >= 0 && vowels.indexOf(cArray[i+1]) < 0) {
+		//				numOfSyllables += 1;
 		//			}
-		//			if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
-		//				newSyllable = false;
-		//				numSyllables++;
+		//			if(i == cArray.length - 1 && vowels.indexOf(cArray[i]) >= 0) {
+		//				numOfSyllables += 1;
 		//			}
-		//			else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
-		//				newSyllable = true;
+		//			if(i == cArray.length - 1 && cArray[i] == 'e' && vowels.indexOf(cArray[i-1]) < 0 && numOfSyllables != 1) {
+		//				numOfSyllables -= 1;			// e.g. "Sugue" should not subtract 1 due to the end e    // lone e will be first added then subtracted
 		//			}
 		//		}
-		//		System.out.println( "found " + numSyllables);
-		//		return numSyllables;
+		//
+		//		return numOfSyllables;
+
+		// 	Alternative Method (given in Module 2)
+	    //	System.out.print("Counting syllables in " + word + "...");
+			int numSyllables = 0;
+			boolean newSyllable = true;
+			String vowels = "aeiouy";
+			char[] cArray = word.toCharArray();
+			for (int i = 0; i < cArray.length; i++)
+			{
+				if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e'
+						&& newSyllable && numSyllables > 0) {
+					numSyllables--;
+				}
+				if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+					newSyllable = false;
+					numSyllables++;
+				}
+				else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
+					newSyllable = true;
+				}
+			}
+			// System.out.println( "found " + numSyllables);
+			return numSyllables;
 	}
 	
 	/** A method for testing
