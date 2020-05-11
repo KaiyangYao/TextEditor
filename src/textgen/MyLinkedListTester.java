@@ -5,14 +5,13 @@ package textgen;
 
 import static org.junit.Assert.*;
 
-import java.util.LinkedList;
-
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author UC San Diego MOOC team
  *
+ * Edited by Kaiyang Yao on 05/2020
  */
 public class MyLinkedListTester {
 
@@ -113,26 +112,50 @@ public class MyLinkedListTester {
 		assertEquals("Remove: check a is correct ", 65, a);
 		assertEquals("Remove: check element 0 is correct ", (Integer)21, list1.get(0));
 		assertEquals("Remove: check size is correct ", 2, list1.size());
-		
-		// TODO: Add more tests here
+
+		try {
+			longerList.remove(LONG_LIST_LENGTH + 1);
+			fail("Check out of bounds");
+		} catch (IndexOutOfBoundsException e) {
+		}
+		try {
+			longerList.remove(-1);
+			fail("Check out of bounds");
+		} catch (IndexOutOfBoundsException e) {
+		}
 	}
 	
 	/** Test adding an element into the end of the list, specifically
 	 *  public boolean add(E element)
 	 * */
 	@Test
-	public void testAddEnd()
-	{
-        // TODO: implement this test
-		
+	public void testAddEnd() throws Exception {
+		// Implemented in week 3
+		setUp();
+		try {
+			longerList.add(null);
+			fail("Check null");
+		}
+		catch (NullPointerException e) {
+		}
+
+		assertEquals(10, longerList.size());
+		longerList.add(3);
+		assertEquals("3", longerList.tail.prev.data.toString());
+		assertEquals(11, longerList.size);
+		longerList.add(10);
+		assertEquals("10", longerList.tail.prev.data.toString());
+		assertEquals(12, longerList.size);
 	}
 
 	
 	/** Test the size of the list */
 	@Test
-	public void testSize()
-	{
-		// TODO: implement this test
+	public void testSize() throws Exception {
+		// Implemented in week 3
+		setUp();
+		assertEquals(2, shortList.size());
+		assertEquals(10, longerList.size());
 	}
 
 	
@@ -142,21 +165,57 @@ public class MyLinkedListTester {
 	 * public void add(int index, E element)
 	 * */
 	@Test
-	public void testAddAtIndex()
-	{
-        // TODO: implement this test
-		
+	public void testAddAtIndex() throws Exception {
+		// Implemented in week 3
+		setUp();
+		try {
+			longerList.add(-1, 3);
+			fail("Check out of bounds");
+		} catch (IndexOutOfBoundsException e) {
+		}
+		try {
+			longerList.add(LONG_LIST_LENGTH + 1, 3);
+			fail("Check out of bounds");
+		} catch (IndexOutOfBoundsException e) {
+		}
+
+		assertEquals(2, shortList.size);
+		shortList.add(0, "Front");
+		assertEquals("Front", shortList.head.next.data);
+
+
 	}
-	
+
 	/** Test setting an element in the list */
 	@Test
-	public void testSet()
-	{
-	    // TODO: implement this test
-	    
+	public void testSet() throws Exception {
+		// Implemented in week 3
+	    setUp();
+		try {
+			longerList.set(-1, 3);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+
+		try {
+			longerList.set(LONG_LIST_LENGTH + 1, 3);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+
+		try {
+			longerList.set(0, null);
+			fail("Check null");
+		}
+		catch (NullPointerException e) {
+		}
+
+	    assertEquals(2, shortList.size);
+	    shortList.set(0, "C");
+		assertEquals("C", shortList.head.next.data);
+		assertEquals(2, shortList.size);
 	}
-	
-	
-	// TODO: Optionally add more test methods.
-	
+
 }
