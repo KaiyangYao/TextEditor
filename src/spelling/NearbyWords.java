@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * @author UC San Diego Intermediate MOOC team
  *
+ * Edited by Kaiyang Yao on 05/2020
  */
 public class NearbyWords implements SpellingSuggest {
 	// THRESHOLD to determine how many words to look through when looking
@@ -76,7 +77,17 @@ public class NearbyWords implements SpellingSuggest {
 	 * @return
 	 */
 	public void insertions(String s, List<String> currentList, boolean wordsOnly ) {
-		// TODO: Implement this method  
+		// Implemented in week 6
+		for(int index = 0; index <= s.length(); index++) {
+			for(int charCode = (int)'a'; charCode <= (int)'z'; charCode++) {
+				StringBuffer sb = new StringBuffer(s);
+				sb.insert(index, (char)charCode);
+
+				if(!currentList.contains(sb.toString()) && (!wordsOnly || dict.isWord(sb.toString()))) {
+					currentList.add(sb.toString());
+				}
+			}
+		}
 	}
 
 	/** Add to the currentList Strings that are one character deletion away
@@ -87,7 +98,15 @@ public class NearbyWords implements SpellingSuggest {
 	 * @return
 	 */
 	public void deletions(String s, List<String> currentList, boolean wordsOnly ) {
-		// TODO: Implement this method
+		// Implemented in week 6
+		for(int index = 0; index < s.length(); index++) {
+			StringBuffer sb = new StringBuffer(s);
+			sb.delete(index, index+1);
+
+			if(!currentList.contains(sb.toString()) && (!wordsOnly || dict.isWord(sb.toString()))) {
+				currentList.add(sb.toString());
+			}
+		}
 	}
 
 	/** Add to the currentList Strings that are one character deletion away
@@ -110,10 +129,44 @@ public class NearbyWords implements SpellingSuggest {
 		queue.add(word);
 		visited.add(word);
 					
-		// TODO: Implement the remainder of this method, see assignment for algorithm
-		
-		return retList;
+		// Implemented in week 6
+		while(!queue.isEmpty() && retList.size() < numSuggestions) {
+			String curr = queue.remove(0);
+			List<String> neighbors = distanceOne(curr, true);
+			for(String neighbor : neighbors) {
+				if(!visited.contains(neighbor)) {
+					visited.add(neighbor);
+					queue.add(neighbor);
+					if(dict.isWord(neighbor)) {
+						retList.add(neighbor);
+					}
+				}
+			}
+		}
 
+//		Input:  word for which to provide number of spelling suggestions
+//		Input:  number of maximum suggestions to provide
+//		Output: list of spelling suggestions
+//
+//		Create a queue to hold words to explore
+//		Create a visited set to avoid looking at the same String repeatedly
+//		Create list of real words to return when finished
+//
+//		Add the initial word to the queue and visited
+//
+//		while the queue has elements and we need more suggestions
+//		remove the word from the start of the queue and assign to curr
+//		get a list of neighbors (strings one mutation away from curr)
+//		for each n in the list of neighbors
+//		if n is not visited
+//		add n to the visited set
+//		add n to the back of the queue
+//		if n is a word in the dictionary
+//		add n to the list of words to return
+//
+//		return the list of real words
+
+		return retList;
 	}	
 
    public static void main(String[] args) {

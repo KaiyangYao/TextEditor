@@ -14,6 +14,8 @@ import java.util.List;
  * 
  * @author UC San Diego Intermediate MOOC team
  *
+ * Edited by Kaiyang Yao on 05/2020
+ *
  */
 public class WPTree implements WordPath {
 
@@ -26,10 +28,9 @@ public class WPTree implements WordPath {
 	// You'll need to create your own NearbyWords object here.
 	public WPTree () {
 		this.root = null;
-		// TODO initialize a NearbyWords object
-		// Dictionary d = new DictionaryHashSet();
-		// DictionaryLoader.loadDictionary(d, "data/dict.txt");
-		// this.nw = new NearbyWords(d);
+        Dictionary d = new DictionaryHashSet();
+        DictionaryLoader.loadDictionary(d, "data/dict.txt");
+        this.nw = new NearbyWords(d);
 	}
 	
 	//This constructor will be used by the grader code
@@ -41,8 +42,55 @@ public class WPTree implements WordPath {
 	// see method description in WordPath interface
 	public List<String> findPath(String word1, String word2) 
 	{
-	    // TODO: Implement this method.
-	    return new LinkedList<String>();
+	    // Implemented in week 6
+        List<WPTreeNode> explore = new LinkedList<>();
+        List<String> visited = new LinkedList<>();
+
+        root = new WPTreeNode(word1, null);
+        visited.add(word1);
+        explore.add(root);
+
+        while(!explore.isEmpty() && !visited.contains(word2)) {
+            WPTreeNode curr = explore.remove(0);
+            List<String> mutations = nw.distanceOne(curr.getWord(), true);
+            for(String n : mutations) {
+                if(!visited.contains(n)) {
+                    curr.addChild(n);
+                    visited.add(n);
+                    WPTreeNode next = new WPTreeNode(n, curr);
+                    explore.add(next);
+                    if(n.equals(word2)) {
+                        printQueue(explore);
+                        return next.buildPathToRoot();
+                    }
+                }
+            }
+        }
+
+//        Input:  word1 which is the start word
+//        Input:  word2 which is the target word
+//        Output: list of a path from word1 to word2 (or null)
+//
+//        Create a queue of WPTreeNodes to hold words to explore
+//        Create a visited set to avoid looking at the same word repeatedly
+//
+//        Set the root to be a WPTreeNode containing word1
+//        Add the initial word to visited
+//        Add root to the queue
+//
+//        while the queue has elements and we have not yet found word2
+//        remove the node from the start of the queue and assign to curr
+//        get a list of real word neighbors (one mutation from curr's word)
+//        for each n in the list of neighbors
+//        if n is not visited
+//        add n as a child of curr
+//        add n to the visited set
+//        add the node for n to the back of the queue
+//        if n is word2
+//        return the path from child to root
+//
+//        return null as no path exists
+        return null;
 	}
 	
 	// Method to print a list of WPTreeNodes (useful for debugging)

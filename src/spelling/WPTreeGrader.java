@@ -18,6 +18,7 @@ public class WPTreeGrader {
             if (i < path.size() - 1) {
                 ret += ", ";
             }
+
         }
         return ret;
     }
@@ -42,7 +43,6 @@ public class WPTreeGrader {
             WPTree tree = new WPTree(new NearbyWords(dict)); 
 
             List<String> path = tree.findPath("pool", "spoon");
-
             feedback += "** Test #1: Testing short path...";
             feedback += "Your path was: " + printPath(path) + ".\n";
 
