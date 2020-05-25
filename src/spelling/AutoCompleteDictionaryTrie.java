@@ -1,14 +1,10 @@
 package spelling;
 
-import java.util.List;
-import java.util.Set;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /** 
  * An trie data structure that implements the Dictionary and the AutoComplete ADT
- * @author You
+ * @author Kaiyang Yao
  *
  */
 public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
@@ -39,8 +35,24 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public boolean addWord(String word)
 	{
-	    //TODO: Implement this method.
-	    return false;
+	    // Implemented in week 5
+		String lowerWord = word.toLowerCase();
+		TrieNode curr = root;
+		for(int i = 0; i < lowerWord.length(); i++) {
+			Character c = lowerWord.charAt(i);
+			if(curr.getChild(c) == null) {
+				curr.insert(c);
+			}
+			curr = curr.getChild(c);
+
+			if(i == lowerWord.length() - 1 && ! curr.endsWord()) {
+				size += 1;
+			}
+		}
+
+		boolean flag = !curr.endsWord();
+		curr.setEndsWord(true);
+	    return flag;
 	}
 	
 	/** 
@@ -49,8 +61,8 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public int size()
 	{
-	    //TODO: Implement this method
-	    return 0;
+		// Implemented in week 5
+	    return size;
 	}
 	
 	
@@ -59,8 +71,16 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	@Override
 	public boolean isWord(String s) 
 	{
-	    // TODO: Implement this method
-		return false;
+		// Implemented in week 5
+		String lowerWord = s.toLowerCase();
+		TrieNode curr = root;
+		for(int i = 0; i < lowerWord.length(); i++) {
+			curr = curr.getChild(lowerWord.charAt(i));
+			if(curr == null) {
+				return false;
+			}
+		}
+		return curr.endsWord();
 	}
 
 	/** 
@@ -86,7 +106,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
      */@Override
      public List<String> predictCompletions(String prefix, int numCompletions) 
      {
-    	 // TODO: Implement this method
+		 // Implemented in week 5
     	 // This method should implement the following algorithm:
     	 // 1. Find the stem in the trie.  If the stem does not appear in the trie, return an
     	 //    empty list
@@ -100,8 +120,40 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       If it is a word, add it to the completions list
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
-    	 
-         return null;
+
+    	 List<String> predictedList = new ArrayList<>();
+    	 TrieNode stem = root;
+    	 prefix = prefix.toLowerCase();
+    	 for(int i = 0; i < prefix.length(); i++) {
+    	 	if(stem == null) {
+				return predictedList;
+			}
+			stem = stem.getChild(prefix.charAt(i));
+		 }
+    	 if(stem == null) {
+    	 	return predictedList;
+		 }
+
+    	 Queue<TrieNode> BFS = new LinkedList<>();
+    	 if(stem.endsWord()) {
+    	 	predictedList.add(stem.getText());
+		 }
+
+    	 for(Character c : stem.getValidNextCharacters()) {
+    	 	BFS.add(stem.getChild(c));
+		 }
+
+    	 while(!BFS.isEmpty() && predictedList.size() < numCompletions) {
+    	 	TrieNode removed = BFS.remove();
+    	 	if(removed.endsWord()) {
+    	 		predictedList.add(removed.getText());
+			}
+    	 	for(Character c : removed.getValidNextCharacters()) {
+    	 		BFS.add(removed.getChild(c));
+			}
+		 }
+
+         return predictedList;
      }
 
  	// For debugging

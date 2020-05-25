@@ -127,7 +127,6 @@ public class TrieGrader {
 
         feedback.append("\n\n\n//TESTING AUTO COMPLETE FUNCTIONALITY (predictCompletions)//");
         List<String> auto = ac.predictCompletions("dog", 3);
-
         appendTestString(12, "3 completions requested...");
         feedback.append("Autocomplete returned the following: ");
         for (String s : auto) {
